@@ -13,7 +13,6 @@ const Slider = () => {
       const q = query(collection(db, "Slider"));
       const querySnapshot = await getDocs(q);
 
-      // Update the sliders state
       setSliders((prev) => [
         ...prev,
         ...querySnapshot.docs.map((doc) => doc.data()),
@@ -41,7 +40,7 @@ const Slider = () => {
         showsHorizontalScrollIndicator={false}
         renderItem={({ item, index }) => (
           <Image
-            source={{ uri: item.imageUrl }}
+            source={{ uri: item?.imageUrl }}
             style={{ width: 300, height: 150, margin: 10, borderRadius: 10 }}
           />
         )}

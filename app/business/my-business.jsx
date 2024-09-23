@@ -2,110 +2,92 @@ import {
   View,
   Text,
   ScrollView,
-  FlatList,
-  TouchableOpacity,
   Image,
-  ActivityIndicator, // Import ActivityIndicator
+  TouchableOpacity,
+  FlatList,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import { where } from "firebase/firestore";
-import { collection, getDocs, query } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../config/FirebaseConfig";
-import { Colors } from "@/constants/Colors";
+import { Colors } from "./../../constants/Colors";
+import { useUser } from "@clerk/clerk-expo";
+import { useRouter } from "expo-router";
 
-const Category = () => {
-  const { category } = useLocalSearchParams();
+const AddBusiness = () => {
+  const { user } = useUser();
+  const emailAddress = user.emailAddresses[0].emailAddress.split("@")[0];
   const [business, setBusiness] = useState([]);
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  //   Get business
 
   const getBusiness = async () => {
     try {
-      setLoading(true); // Start loading
-      setBusiness([]);
+      setBusiness([]); // Clear previous business data
 
+      // Create a query to search for businesses by email
       const q = query(
         collection(db, "BusinessList"),
-        where("category", "==", category)
+        where("email", "==", emailAddress + "@gmail.com")
       );
+
+      // Fetch documents matching the query
       const querySnapshot = await getDocs(q);
 
-      setBusiness((prev) => [
-        ...prev,
-        ...querySnapshot.docs.map((doc) => ({
-          id: doc?.id,
-          ...doc.data(),
-        })),
-      ]);
+      // Update the business state with the fetched data
+      querySnapshot.forEach((doc) => {
+        setBusiness((prev) => [
+          ...prev,
+          {
+            id: doc.id,
+            ...doc.data(),
+          },
+        ]);
+      });
     } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false); // Stop loading
+      console.error("Error fetching businesses:", error);
     }
   };
 
   useEffect(() => {
     getBusiness();
-  }, []);
+  }, [emailAddress + "@gmail.com"]);
 
   return (
-    <ScrollView style={{ backgroundColor: "#0a7ea4" }}>
-      {loading ? (
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-            display: "flex",
-          }}
-        >
-          <ActivityIndicator
-            size="large"
-            color={Colors.primary}
-            animating={true}
-            hidesWhenStopped={true}
-            style={{ marginTop: "100%" }}
-          />
-        </View>
-      ) : business.length === 0 ? (
-        // Show "No Business Found" if no data and not loading
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            minHeight: "85vh",
-          }}
-        >
-          <Text
-            style={{ color: Colors.primary, fontWeight: "bold", fontSize: 20 }}
-          >
-            No Business Found
-          </Text>
-        </View>
-      ) : (
+    <ScrollView
+      style={{
+        backgroundColor: "#0a7ea4",
+        height: "100%",
+      }}
+    >
+      <Text
+        style={{ color: "white", margin: 20, fontSize: 24, fontWeight: "bold" }}
+      >
+        My Business
+      </Text>
+
+      {/*  business  */}
+
+      <View style={{ padding: 20 }}>
         <FlatList
-          refreshing={loading}
-          onRefresh={getBusiness}
-          style={{ padding: 10 }}
           data={business}
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
             <TouchableOpacity
-              onPress={() => router.push(`/businessdetails/${item.id}`)}
+              onPress={() => router.push(`businessdetails/${item.id}`)}
             >
               <View
                 style={{
-                  margin: 10,
                   padding: 10,
                   backgroundColor: "#fff",
                   borderRadius: 5,
+                  marginBottom: 20,
                 }}
               >
                 <Image
                   source={{ uri: item?.imageUrl }}
                   style={{
-                    width: "100%",
+                    width: 300,
                     height: 150,
                     backgroundColor: "white",
                     borderRadius: 5,
@@ -172,9 +154,9 @@ const Category = () => {
             </TouchableOpacity>
           )}
         />
-      )}
+      </View>
     </ScrollView>
   );
 };
 
-export default Category;
+export default AddBusiness;

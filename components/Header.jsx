@@ -11,7 +11,7 @@ const Header = () => {
     <View>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Image
-          source={{ uri: user.imageUrl }}
+          source={{ uri: user?.imageUrl }}
           style={{ width: 50, height: 50, borderRadius: 25, margin: 10 }}
         />
         <View>

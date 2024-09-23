@@ -3,9 +3,12 @@ import React, { useEffect, useState } from "react";
 import { Colors } from "@/constants/Colors";
 import { db } from "../config/FirebaseConfig";
 import { collection, getDocs, query } from "firebase/firestore";
+import { useRouter } from "expo-router";
 
 const PopularBusiness = () => {
   const [business, setBusiness] = useState([]);
+
+  const router = useRouter();
 
   const getBusiness = async () => {
     try {
@@ -14,11 +17,15 @@ const PopularBusiness = () => {
       const q = query(collection(db, "BusinessList"));
       const querySnapshot = await getDocs(q);
 
-      // Update the sliders state
-      setBusiness((prev) => [
-        ...prev,
-        ...querySnapshot.docs.map((doc) => doc.data()),
-      ]);
+      querySnapshot.forEach((doc) => {
+        setBusiness((prev) => [
+          ...prev,
+          {
+            id: doc.id,
+            ...doc.data(),
+          },
+        ]);
+      });
     } catch (error) {
       console.log(error);
     }
@@ -66,7 +73,9 @@ const PopularBusiness = () => {
         showsHorizontalScrollIndicator={false}
         horizontal={true}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => console.log(item)}>
+          <TouchableOpacity
+            onPress={() => router.push(`businessdetails/${item.id}`)}
+          >
             <View
               style={{
                 margin: 10,
@@ -76,7 +85,7 @@ const PopularBusiness = () => {
               }}
             >
               <Image
-                source={{ uri: item.imageUrl }}
+                source={{ uri: item?.imageUrl }}
                 style={{
                   width: 300,
                   height: 150,
