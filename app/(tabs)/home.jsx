@@ -1,11 +1,12 @@
 import { View, ScrollView } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import Header from "../../components/Header";
 import Slider from "../../components/Slider";
 import Category from "../../components/Category";
 import PopularBusiness from "../../components/PopularBusiness";
 
 const Home = () => {
+  const [loading, setLoading] = useState(false);
   return (
     <ScrollView
       style={{

@@ -27,9 +27,10 @@ const AddBusiness = () => {
   const [contact, setContact] = useState("");
   const [website, setWebsite] = useState("");
   const [location, setLocation] = useState("");
+  const [price, setPrice] = useState("");
   const navigation = useNavigation();
   const { user } = useUser();
-  const userName = user.emailAddresses[0].emailAddress.split("@")[0];
+  const userName = user?.emailAddresses[0].emailAddress.split("@")[0];
 
   // Header
   useEffect(() => {
@@ -116,6 +117,7 @@ const AddBusiness = () => {
         userName: userName,
         email: userName + "@gmail.com",
         location,
+        price,
       });
       setName("");
       setAbout("");
@@ -124,6 +126,7 @@ const AddBusiness = () => {
       setWebsite("");
       setSelectedCategory(null);
       setImage(null);
+      setPrice("");
 
       ToastAndroid.show("Business added successfully", ToastAndroid.TOP);
     } catch (error) {
@@ -144,9 +147,17 @@ const AddBusiness = () => {
       }}
     >
       <Text
-        style={{ color: "white", margin: 20, fontSize: 24, fontWeight: "bold" }}
+        style={{
+          color: "white",
+          margin: 10,
+          fontSize: 24,
+          fontWeight: "bold",
+          backgroundColor: Colors.primary,
+          padding: 10,
+          borderRadius: 10,
+        }}
       >
-        Add New Business
+        Add New Products
       </Text>
 
       {/* Add business form */}
@@ -209,6 +220,25 @@ const AddBusiness = () => {
               marginVertical: 10,
               height: 100,
               textAlignVertical: "top",
+              borderRadius: 5,
+            }}
+          />
+
+          <TextInput
+            onChangeText={(price) => setPrice(price)}
+            autoCapitalize="none"
+            multiline
+            placeholder="Price $"
+            placeholderTextColor={"white"}
+            style={{
+              marginBottom: 10,
+              width: "100%",
+              borderStyle: "solid",
+              borderWidth: 2,
+              borderColor: "white",
+              padding: 10,
+              color: "white",
+              marginVertical: 10,
               borderRadius: 5,
             }}
           />

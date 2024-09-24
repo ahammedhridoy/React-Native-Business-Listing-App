@@ -3,7 +3,6 @@ import { TextInput, Button, View } from "react-native";
 import { useSignUp } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
 import { Colors } from "react-native/Libraries/NewAppScreen";
-import toast, { Toaster } from "react-hot-toast";
 
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -107,7 +106,11 @@ export default function SignUpScreen() {
             placeholder="Code..."
             onChangeText={(code) => setCode(code)}
           />
-          <Button title="Verify Email" onPress={onPressVerify} />
+          <Button
+            title="Verify Email"
+            color="#152565"
+            onPress={onPressVerify}
+          />
         </>
       )}
     </View>

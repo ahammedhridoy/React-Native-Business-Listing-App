@@ -1,12 +1,17 @@
 import { View, Text, Image, TextInput } from "react-native";
 import React from "react";
-import { useUser } from "@clerk/clerk-expo";
+import { useAuth, useUser } from "@clerk/clerk-expo";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Colors } from "@/constants/Colors";
 
 const Header = () => {
   const { user } = useUser();
-  const userName = user.emailAddresses[0].emailAddress.split("@")[0];
+  const { isSignedIn } = useAuth();
+  if (!isSignedIn) {
+    console.log("User is not signed in");
+  }
+  console.log(user);
+  const userName = user?.emailAddresses[0].emailAddress.split("@")[0];
   return (
     <View>
       <View style={{ flexDirection: "row", alignItems: "center" }}>

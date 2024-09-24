@@ -39,8 +39,8 @@ const BusinessId = () => {
   const [reviews, setReviews] = useState(0);
   const [userInput, setUserInput] = useState("");
   const { user } = useUser();
-  const userName = user.emailAddresses[0].emailAddress.split("@")[0];
-  const userEmail = user.emailAddresses[0].emailAddress.split("@")[0];
+  const userName = user?.emailAddresses[0].emailAddress.split("@")[0];
+  const userEmail = user?.emailAddresses[0].emailAddress.split("@")[0];
   const [modalVisible, setModalVisible] = useState(false);
 
   //     Action button
@@ -213,6 +213,15 @@ const BusinessId = () => {
               >
                 {business?.name}
               </Text>
+              <Text
+                style={{
+                  color: Colors.primary,
+                  fontSize: 20,
+                  fontWeight: "bold",
+                }}
+              >
+                ${business?.price}
+              </Text>
               <Text style={{ color: "grey", fontSize: 16 }}>
                 {business?.address}
               </Text>
@@ -280,45 +289,49 @@ const BusinessId = () => {
           </View>
 
           {/* Action buttons */}
-          <FlatList
-            onRefresh={getBusiness}
-            refreshing={loading}
-            style={{ backgroundColor: "white", paddingHorizontal: 20 }}
-            contentContainerStyle={{ gap: 10 }}
-            columnWrapperStyle={{ justifyContent: "space-between" }}
-            numColumns={4}
-            data={actionButton}
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item, index }) => (
-              <View
-                key={index}
-                style={{
-                  backgroundColor: "white",
-                  marginTop: 10,
-                }}
-              >
-                <TouchableOpacity onPress={() => onPressShare(item)}>
-                  <View
-                    style={{
-                      gap: 10,
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Image
-                      source={item?.icon}
-                      style={{ width: 40, height: 40 }}
-                      resizeMode="contain"
-                    />
-                    <Text style={{ color: Colors.primary, fontWeight: "bold" }}>
-                      {item.name}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            )}
-          ></FlatList>
+          <ScrollView nestedScrollEnabled={true}>
+            <FlatList
+              onRefresh={getBusiness}
+              refreshing={loading}
+              style={{ backgroundColor: "white", paddingHorizontal: 20 }}
+              contentContainerStyle={{ gap: 10 }}
+              columnWrapperStyle={{ justifyContent: "space-between" }}
+              numColumns={4}
+              data={actionButton}
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item, index }) => (
+                <View
+                  key={index}
+                  style={{
+                    backgroundColor: "white",
+                    marginTop: 10,
+                  }}
+                >
+                  <TouchableOpacity onPress={() => onPressShare(item)}>
+                    <View
+                      style={{
+                        gap: 10,
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Image
+                        source={item?.icon}
+                        style={{ width: 40, height: 40 }}
+                        resizeMode="contain"
+                      />
+                      <Text
+                        style={{ color: Colors.primary, fontWeight: "bold" }}
+                      >
+                        {item.name}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              )}
+            ></FlatList>
+          </ScrollView>
 
           {/* About */}
           <View style={{ padding: 20, backgroundColor: "white" }}>

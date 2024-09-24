@@ -1,4 +1,11 @@
-import { View, Text, FlatList, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { Colors } from "@/constants/Colors";
 import { db } from "../config/FirebaseConfig";
@@ -41,12 +48,15 @@ const Category = () => {
         <Text
           style={{
             color: "white",
-            margin: 20,
+            margin: 10,
             fontSize: 24,
             fontWeight: "bold",
+            backgroundColor: Colors.primary,
+            padding: 10,
+            borderRadius: 10,
           }}
         >
-          #Category
+          Category
         </Text>
         <Text
           style={{
@@ -62,40 +72,42 @@ const Category = () => {
       </View>
 
       {/* Category */}
-      <FlatList
-        data={category}
-        showsHorizontalScrollIndicator={false}
-        horizontal={true}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() => router.push("/businesslist/" + item.name)}
-          >
-            <View style={{ alignItems: "center", margin: 10 }}>
-              <Image
-                source={{ uri: item.icon }}
-                style={{
-                  width: 50,
-                  height: 50,
-                  backgroundColor: "white",
-                  padding: 20,
-                  borderRadius: 25,
-                }}
-              />
+      <ScrollView nestedScrollEnabled={true}>
+        <FlatList
+          data={category}
+          showsHorizontalScrollIndicator={false}
+          horizontal={true}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              onPress={() => router.push("/businesslist/" + item.name)}
+            >
+              <View style={{ alignItems: "center", margin: 10 }}>
+                <Image
+                  source={{ uri: item.icon }}
+                  style={{
+                    width: 50,
+                    height: 50,
+                    backgroundColor: "white",
+                    padding: 20,
+                    borderRadius: 25,
+                  }}
+                />
 
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 14,
-                  fontWeight: "bold",
-                  marginTop: 5,
-                }}
-              >
-                {item.name}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        )}
-      />
+                <Text
+                  style={{
+                    color: "white",
+                    fontSize: 14,
+                    fontWeight: "bold",
+                    marginTop: 5,
+                  }}
+                >
+                  {item.name}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
+      </ScrollView>
     </View>
   );
 };

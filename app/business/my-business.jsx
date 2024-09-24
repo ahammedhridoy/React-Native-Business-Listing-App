@@ -15,7 +15,7 @@ import { useRouter } from "expo-router";
 
 const AddBusiness = () => {
   const { user } = useUser();
-  const emailAddress = user.emailAddresses[0].emailAddress.split("@")[0];
+  const emailAddress = user?.emailAddresses[0].emailAddress.split("@")[0];
   const [business, setBusiness] = useState([]);
   const router = useRouter();
 
@@ -61,9 +61,17 @@ const AddBusiness = () => {
       }}
     >
       <Text
-        style={{ color: "white", margin: 20, fontSize: 24, fontWeight: "bold" }}
+        style={{
+          color: "white",
+          margin: 10,
+          fontSize: 24,
+          fontWeight: "bold",
+          backgroundColor: Colors.primary,
+          padding: 10,
+          borderRadius: 10,
+        }}
       >
-        My Business
+        My Products
       </Text>
 
       {/*  business  */}
@@ -94,16 +102,34 @@ const AddBusiness = () => {
                   }}
                 />
 
-                <Text
+                <View
                   style={{
-                    color: Colors.primary,
-                    fontSize: 20,
-                    fontWeight: "bold",
-                    marginTop: 5,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
                   }}
                 >
-                  {item.name}
-                </Text>
+                  <Text
+                    style={{
+                      color: Colors.primary,
+                      fontSize: 20,
+                      fontWeight: "bold",
+                      marginTop: 5,
+                    }}
+                  >
+                    {item.name}
+                  </Text>
+
+                  <Text
+                    style={{
+                      color: Colors.primary,
+                      fontSize: 20,
+                      fontWeight: "bold",
+                      marginTop: 5,
+                    }}
+                  >
+                    ${item.price}
+                  </Text>
+                </View>
 
                 <Text
                   style={{

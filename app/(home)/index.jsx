@@ -7,10 +7,6 @@ import { Stack } from "expo-router";
 export default function Page() {
   const { user } = useUser();
 
-  if (user) {
-    return <Home />;
-  }
-
   return (
     <View>
       <SignedIn>

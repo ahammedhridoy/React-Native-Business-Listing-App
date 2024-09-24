@@ -1,16 +1,28 @@
-import { View, Text } from "react-native";
+import { View, Text, Image } from "react-native";
 import React from "react";
 import { Colors } from "@/constants/Colors";
 import { Link, Redirect } from "expo-router";
-import { useAuth } from "@clerk/clerk-expo";
+import { useAuth, isSignedIn, useUser } from "@clerk/clerk-expo";
 
 const LoginScreen = () => {
-  const user = useAuth();
-  if (user) {
-    return <Redirect href="/home" />;
-  }
+  const { user } = useUser();
+  if (user) return <Redirect href="/home" />;
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={{ width: "95%", marginHorizontal: 10, marginVertical: 10 }}>
+        <Image
+          source={require("../assets/images/sell.jpg")}
+          style={{
+            width: "100%",
+            height: 200,
+            padding: 10,
+            borderRadius: 10,
+            borderWidth: 2,
+            borderColor: Colors.primary,
+          }}
+        />
+      </View>
+
       <Text
         style={{
           fontSize: 30,
@@ -18,10 +30,10 @@ const LoginScreen = () => {
           color: Colors.primary,
         }}
       >
-        Business Directory APP
+        Buy Sell APP
       </Text>
 
-      <Text>Find your favourite business near you</Text>
+      <Text>Find your favourite products near you</Text>
 
       <Link
         href="/sign-in"

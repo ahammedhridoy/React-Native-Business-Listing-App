@@ -1,12 +1,20 @@
 import { useSignIn } from "@clerk/clerk-expo";
-import { Link, useRouter } from "expo-router";
+import { Link, useNavigation, useRouter } from "expo-router";
 import { Text, TextInput, Button, View } from "react-native";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 
 export default function Page() {
   const { signIn, setActive, isLoaded } = useSignIn();
   const router = useRouter();
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: "Sign In",
+      headerShown: true,
+    });
+  });
 
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
