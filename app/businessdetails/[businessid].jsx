@@ -14,6 +14,7 @@ import {
   Modal,
   StyleSheet,
   Pressable,
+  SafeAreaView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -181,7 +182,7 @@ const BusinessId = () => {
               <Ionicons
                 name="arrow-back-circle"
                 size={40}
-                color="white"
+                color="black"
                 style={{ position: "absolute", zIndex: 10 }}
               />
             </TouchableOpacity>
@@ -289,7 +290,7 @@ const BusinessId = () => {
           </View>
 
           {/* Action buttons */}
-          <ScrollView nestedScrollEnabled={true}>
+          <SafeAreaView style={{ flex: 1 }}>
             <FlatList
               onRefresh={getBusiness}
               refreshing={loading}
@@ -331,7 +332,7 @@ const BusinessId = () => {
                 </View>
               )}
             ></FlatList>
-          </ScrollView>
+          </SafeAreaView>
 
           {/* About */}
           <View style={{ padding: 20, backgroundColor: "white" }}>

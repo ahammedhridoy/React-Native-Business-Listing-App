@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  SafeAreaView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Colors } from "@/constants/Colors";
@@ -17,6 +18,7 @@ import { db } from "../../config/FirebaseConfig";
 const Explore = () => {
   const router = useRouter();
   const [business, setBusiness] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const getBusiness = async () => {
     try {
@@ -76,9 +78,11 @@ const Explore = () => {
       </View>
 
       {/* Popular Business */}
-      <ScrollView nestedScrollEnabled={true}>
+      <SafeAreaView style={{ flex: 1 }}>
         <FlatList
           data={business}
+          refreshing={loading}
+          onRefresh={getBusiness}
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
             <TouchableOpacity
@@ -180,7 +184,7 @@ const Explore = () => {
             </TouchableOpacity>
           )}
         />
-      </ScrollView>
+      </SafeAreaView>
     </View>
   );
 };
